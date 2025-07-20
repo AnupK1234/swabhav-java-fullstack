@@ -32,15 +32,20 @@ public class CustomerService {
 			System.out.print("Enter choice: ");
 			choice = sc.nextInt();
 
-			switch (choice) {
-			case 1 -> viewAllProducts();
-			case 2 -> addItemToCart();
-			case 3 -> viewCart();
-			case 4 -> removeItemFromCart();
+			try {
+				switch (choice) {
+				case 1 -> viewAllProducts();
+				case 2 -> addItemToCart();
+				case 3 -> viewCart();
+				case 4 -> removeItemFromCart();
 //			case 5 -> placeOrder();
-			case 0 -> System.out.println("Thank you for shopping!");
-			default -> System.out.println("Invalid choice.");
+				case 0 -> System.out.println("Thank you for shopping!");
+				default -> System.out.println("Invalid choice.");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
+
 		} while (choice != 0);
 	}
 
@@ -62,17 +67,21 @@ public class CustomerService {
 
 	private void addItemToCart() {
 		System.out.print("Enter Item ID to add: ");
-		long id = sc.nextInt();
+		long id = sc.nextLong();
 
 		Optional<MenuItem> itemOpt = items.stream().filter(p -> p.getId() == id).findFirst();
 
 		if (itemOpt.isPresent()) {
 			System.out.print("Enter quantity: ");
 			int qty = sc.nextInt();
-			OrderItem orderItem = new OrderItem(itemOpt.get(), qty);
+
 			// first check if the item is present in cart
 			// if present then just increase the qty cnt else add new item to cart
-			cart.add(orderItem);
+
+			if (!ifMenuItemInCartIncQty(id, qty)) {
+				OrderItem orderItem = new OrderItem(itemOpt.get(), qty);
+				cart.add(orderItem);
+			}
 			System.out.println("Item added to cart.");
 		} else {
 			throw new MenuItemNotFoundException("Item not present in menu");
@@ -80,19 +89,23 @@ public class CustomerService {
 	}
 
 	private void viewCart() {
+		int cartValue = 0;
 		if (cart.isEmpty()) {
 			System.out.println("No items found in cart.");
 		} else {
-			System.out.println("\n-----------------------------------------------------------");
-			System.out.printf("| %-20s | %-20s | %-10s |\n", "ID", "Name", "Price");
-			System.out.println("-----------------------------------------------------------");
+			System.out.println("\n------------------------------------------------------------------------");
+			System.out.printf("| %-20s | %-20s | %-10s | %-10s |\n", "Item ID", "Name", "Quantity", "Price/unit");
+			System.out.println("------------------------------------------------------------------------");
 
 			for (OrderItem item : cart) {
 				MenuItem mItem = item.getItem();
-				System.out.printf("| %-20d | %-20s | %-10.2f |\n", mItem.getId(), mItem.getName(), mItem.getPrice());
+				System.out.printf("| %-20d | %-20s | %-10s | %-10.2f |\n", mItem.getId(), mItem.getName(),
+						item.getQuantity(), mItem.getPrice());
+				cartValue += item.getQuantity() * mItem.getPrice();
 			}
 
-			System.out.println("-----------------------------------------------------------");
+			System.out.println("------------------------------------------------------------------------");
+			System.out.println("The Cart value is : " + cartValue);
 		}
 	}
 
@@ -105,7 +118,7 @@ public class CustomerService {
 		System.out.print("Enter ID to remove: ");
 		long id = sc.nextLong();
 
-		boolean removed = cart.removeIf(item -> item.getId() == id);
+		boolean removed = cart.removeIf(item -> item.getItem().getId() == id);
 		if (removed) {
 			System.out.println("Item removed.");
 		} else {
@@ -113,24 +126,31 @@ public class CustomerService {
 		}
 	}
 
-//	private void placeOrder() {
-//		if (cart.isEmpty()) {
-//			System.out.println("Cart is empty. Add items before placing order.");
-//			return;
-//		}
-//
-//		Order order = new Order(1, new Date(), new ArrayList<>(cart));
-//		Customer customer = new Customer(101, "Anup", order);
-//
-//		System.out.println("\n--- Order Invoice ---");
-//		customer.printCustomerDetail();
-//		for (LineItem item : order.getItems()) {
-//			System.out.printf("Product: %s | Qty: %d | Total: %.2f%n", item.getProduct().getName(), item.getQuantity(),
-//					item.getUnitPrice());
-//		}
-//		System.out.printf("Total Order Price: %.2f%n", order.calculateOrderPrice());
-//
-//		// Clear the cart after placing the order
-//		cart.clear();
-//	}
+	private void placeOrder() {
+		if (cart.isEmpty()) {
+			System.out.println("Cart is empty. Add items before placing order.");
+			return;
+		}
+
+		// create order
+		
+		// do payment
+		
+		// print invoice
+		
+		// assign delivery partner
+		
+		// Clear the cart after placing the order
+		cart.clear();
+	}
+
+	public boolean ifMenuItemInCartIncQty(long itemId, int qty) {
+		for (OrderItem orderItem : cart) {
+			if (orderItem.getItem().getId() == itemId) {
+				orderItem.setQuantity(orderItem.getQuantity() + qty);
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -3,6 +3,7 @@ package com.aurionpro.fooddelivery.test;
 import java.util.Scanner;
 
 import com.aurionpro.fooddelivery.service.AdminService;
+import com.aurionpro.fooddelivery.service.CustomerService;
 
 public class FoodDeliveryMain {
 
@@ -18,8 +19,8 @@ public class FoodDeliveryMain {
 			admin.displayMenu();
 		}
 		case "user" -> {
-//			CustomerService customer = new CustomerService();
-//			customer.displayMenu();
+			CustomerService customer = new CustomerService();
+			customer.displayMenu();
 		}
 		default -> System.out.println("Invalid role.");
 		}

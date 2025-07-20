@@ -5,17 +5,20 @@ import java.util.List;
 
 import com.aurionpro.fooddelivery.enums.PaymentMode;
 
+import struqt.util.UniqueIdGenerator;
+
 public class Order {
-	private int id;
+	private long id;
 	private List<OrderItem> items;
 	private double totalAmount;
 	private double discout;
 	private double finalAmt;
 	private PaymentMode paymentMode;
 	private LocalDateTime timestamp;
+	UniqueIdGenerator generator = new UniqueIdGenerator(1L);
 
-	public Order(int id, List<OrderItem> items, double totalAmount, double discout, PaymentMode paymentMode) {
-		this.id = id;
+	public Order(List<OrderItem> items, double totalAmount, double discout, PaymentMode paymentMode) {
+		this.id = generator.next();
 		this.items = items;
 		this.totalAmount = totalAmount;
 		this.discout = discout;
@@ -24,7 +27,7 @@ public class Order {
 		this.timestamp = LocalDateTime.now();
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
