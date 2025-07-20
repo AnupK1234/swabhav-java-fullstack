@@ -6,14 +6,17 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import com.aurionpro.fooddelivery.datastore.MenuRepository;
+import com.aurionpro.fooddelivery.enums.PaymentMode;
 import com.aurionpro.fooddelivery.exception.MenuItemNotFoundException;
 import com.aurionpro.fooddelivery.model.MenuItem;
+import com.aurionpro.fooddelivery.model.Order;
 import com.aurionpro.fooddelivery.model.OrderItem;
 
 public class CustomerService {
 	private List<MenuItem> items;
 	private List<OrderItem> cart = new ArrayList<>();
 	private Scanner sc = new Scanner(System.in);
+	PaymentService pay;
 
 	public CustomerService() {
 		this.items = MenuRepository.loadMenuItems();
@@ -38,7 +41,7 @@ public class CustomerService {
 				case 2 -> addItemToCart();
 				case 3 -> viewCart();
 				case 4 -> removeItemFromCart();
-//			case 5 -> placeOrder();
+				case 5 -> placeOrder();
 				case 0 -> System.out.println("Thank you for shopping!");
 				default -> System.out.println("Invalid choice.");
 				}
@@ -133,13 +136,24 @@ public class CustomerService {
 		}
 
 		// create order
-		
+		System.out.println("What is your preferred mode of Payment? 1. UPI 2. Cash");
+		int paymentChoice = sc.nextInt();
+		Order order;
+
 		// do payment
-		
+		if (paymentChoice == 1) {
+			order = new Order(cart, PaymentMode.UPI);
+		} else {
+			order = new Order(cart, PaymentMode.CASH);
+		}
+		pay = new PaymentService();
+		pay.processPayment(order);
+
 		// print invoice
-		
+		InvoicePrinter.printInvoice(order);
+
 		// assign delivery partner
-		
+
 		// Clear the cart after placing the order
 		cart.clear();
 	}

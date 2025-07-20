@@ -17,14 +17,12 @@ public class Order {
 	private LocalDateTime timestamp;
 	UniqueIdGenerator generator = new UniqueIdGenerator(1L);
 
-	public Order(List<OrderItem> items, double totalAmount, double discout, PaymentMode paymentMode) {
+	public Order(List<OrderItem> items, PaymentMode paymentMode) {
 		this.id = generator.next();
 		this.items = items;
-		this.totalAmount = totalAmount;
-		this.discout = discout;
-//		this.finalAmt = finalAmt;
 		this.paymentMode = paymentMode;
 		this.timestamp = LocalDateTime.now();
+		calculateAmounts();
 	}
 
 	public long getId() {
@@ -77,6 +75,22 @@ public class Order {
 
 	public LocalDateTime getTimestamp() {
 		return timestamp;
+	}
+
+	public void calculateAmounts() {
+		double total = 0.0;
+		for (OrderItem item : items) {
+			total += item.getItem().getPrice() * item.getQuantity();
+		}
+		this.totalAmount = total;
+
+		if (total > 500) {
+			this.discout = total * 0.10; // 10% discount
+		} else {
+			this.discout = 0;
+		}
+
+		this.finalAmt = total - this.discout;
 	}
 
 }
