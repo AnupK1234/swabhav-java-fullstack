@@ -10,7 +10,7 @@ import struqt.util.UniqueIdGenerator;
 
 public class DeliveryService {
 	private static final List<DeliveryPartner> partners = new ArrayList<>();
-	private static final UniqueIdGenerator generator = new UniqueIdGenerator(100);
+	private transient static final UniqueIdGenerator generator = new UniqueIdGenerator(100);
 
 	public static void addPartner(String name, String email, long phone) {
 		DeliveryPartner partner = new DeliveryPartner(generator.next(), name, email, phone, null, true);

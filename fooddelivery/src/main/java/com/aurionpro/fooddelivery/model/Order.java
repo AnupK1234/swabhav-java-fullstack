@@ -1,5 +1,6 @@
 package com.aurionpro.fooddelivery.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import com.aurionpro.fooddelivery.enums.PaymentMode;
 
 import struqt.util.UniqueIdGenerator;
 
-public class Order {
+public class Order implements Serializable {
 	private long id;
 	private List<OrderItem> items;
 	private double totalAmount;
@@ -17,7 +18,7 @@ public class Order {
 	private String deliveryAdd;
 	private LocalDateTime timestamp;
 	private DeliveryPartner deliveryPartner;
-	UniqueIdGenerator generator = new UniqueIdGenerator(1L);
+	transient UniqueIdGenerator generator = new UniqueIdGenerator(1L);
 
 	public Order(List<OrderItem> items, PaymentMode paymentMode, String deliveryAdd) {
 		this.id = generator.next();

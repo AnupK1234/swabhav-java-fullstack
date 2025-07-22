@@ -1,12 +1,14 @@
 package com.aurionpro.fooddelivery.model;
 
+import java.io.Serializable;
+
 import struqt.util.UniqueIdGenerator;
 
-public class OrderItem {
+public class OrderItem implements Serializable {
 	private long id;
 	private int quantity;
 	private MenuItem item;
-	UniqueIdGenerator generator = new UniqueIdGenerator(1L);
+	private transient UniqueIdGenerator generator = new UniqueIdGenerator(1L);
 
 	public OrderItem(MenuItem item, int quantity) {
 		this.id = generator.next();

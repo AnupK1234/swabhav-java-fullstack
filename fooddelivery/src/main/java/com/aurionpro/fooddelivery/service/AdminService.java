@@ -38,7 +38,6 @@ public class AdminService {
 				case 2 -> updateMenuItem(sc);
 				case 3 -> deleteMenuItem(sc);
 				case 4 -> viewAllMenuItems();
-//			case 5 -> printInvoiceDemo();
 				case 5 -> DeliveryService.adminMenu(sc);
 				case 0 -> System.out.println("Exiting...");
 				default -> System.out.println("Invalid choice.");
