@@ -14,14 +14,17 @@ public class Order {
 	private double discout;
 	private double finalAmt;
 	private PaymentMode paymentMode;
+	private String deliveryAdd;
 	private LocalDateTime timestamp;
+	private DeliveryPartner deliveryPartner;
 	UniqueIdGenerator generator = new UniqueIdGenerator(1L);
 
-	public Order(List<OrderItem> items, PaymentMode paymentMode) {
+	public Order(List<OrderItem> items, PaymentMode paymentMode, String deliveryAdd) {
 		this.id = generator.next();
 		this.items = items;
 		this.paymentMode = paymentMode;
 		this.timestamp = LocalDateTime.now();
+		this.deliveryAdd = deliveryAdd;
 		calculateAmounts();
 	}
 
@@ -91,6 +94,14 @@ public class Order {
 		}
 
 		this.finalAmt = total - this.discout;
+	}
+
+	public DeliveryPartner getDeliveryPartner() {
+		return this.deliveryPartner;
+	}
+
+	public void setDeliveryPartner(DeliveryPartner deliveryPartner) {
+		this.deliveryPartner = deliveryPartner;
 	}
 
 }

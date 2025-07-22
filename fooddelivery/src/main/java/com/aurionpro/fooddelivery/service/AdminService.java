@@ -26,7 +26,7 @@ public class AdminService {
 			System.out.println("2. Update Menu");
 			System.out.println("3. Delete Menu Item");
 			System.out.println("4. View menu");
-			System.out.println("5. Print Invoice (Demo)");
+			System.out.println("5. Delivery Partner management");
 			System.out.println("0. Exit");
 			System.out.print("Enter choice: ");
 			choice = sc.nextInt();
@@ -39,6 +39,7 @@ public class AdminService {
 				case 3 -> deleteMenuItem(sc);
 				case 4 -> viewAllMenuItems();
 //			case 5 -> printInvoiceDemo();
+				case 5 -> DeliveryService.adminMenu(sc);
 				case 0 -> System.out.println("Exiting...");
 				default -> System.out.println("Invalid choice.");
 				}

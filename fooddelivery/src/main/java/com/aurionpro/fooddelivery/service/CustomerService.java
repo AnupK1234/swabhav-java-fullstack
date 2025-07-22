@@ -8,6 +8,7 @@ import java.util.Scanner;
 import com.aurionpro.fooddelivery.datastore.MenuRepository;
 import com.aurionpro.fooddelivery.enums.PaymentMode;
 import com.aurionpro.fooddelivery.exception.MenuItemNotFoundException;
+import com.aurionpro.fooddelivery.model.DeliveryPartner;
 import com.aurionpro.fooddelivery.model.MenuItem;
 import com.aurionpro.fooddelivery.model.Order;
 import com.aurionpro.fooddelivery.model.OrderItem;
@@ -24,18 +25,18 @@ public class CustomerService {
 
 	public void displayMenu() {
 		int choice;
-		do {
-			System.out.println("\n--- Customer Menu ---");
-			System.out.println("1. View Menu");
-			System.out.println("2. Add Item to Cart");
-			System.out.println("3. View Cart");
-			System.out.println("4. Remove Item from Cart");
-			System.out.println("5. Place Order");
-			System.out.println("0. Exit");
-			System.out.print("Enter choice: ");
-			choice = sc.nextInt();
+		try {
+			do {
+				System.out.println("\n--- Customer Menu ---");
+				System.out.println("1. View Menu");
+				System.out.println("2. Add Item to Cart");
+				System.out.println("3. View Cart");
+				System.out.println("4. Remove Item from Cart");
+				System.out.println("5. Place Order");
+				System.out.println("0. Exit");
+				System.out.print("Enter choice: ");
+				choice = sc.nextInt();
 
-			try {
 				switch (choice) {
 				case 1 -> viewAllProducts();
 				case 2 -> addItemToCart();
@@ -45,11 +46,11 @@ public class CustomerService {
 				case 0 -> System.out.println("Thank you for shopping!");
 				default -> System.out.println("Invalid choice.");
 				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
 
-		} while (choice != 0);
+			} while (choice != 0);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private void viewAllProducts() {
@@ -135,6 +136,10 @@ public class CustomerService {
 			return;
 		}
 
+		System.out.println("Enter your delivery address : ");
+		String deliveryAdd = sc.nextLine();
+		sc.nextLine();
+
 		// create order
 		System.out.println("What is your preferred mode of Payment? 1. UPI 2. Cash");
 		int paymentChoice = sc.nextInt();
@@ -142,17 +147,20 @@ public class CustomerService {
 
 		// do payment
 		if (paymentChoice == 1) {
-			order = new Order(cart, PaymentMode.UPI);
+			order = new Order(cart, PaymentMode.UPI, deliveryAdd);
+			pay = new PaymentService();
+			pay.processPayment(order);
 		} else {
-			order = new Order(cart, PaymentMode.CASH);
+			order = new Order(cart, PaymentMode.CASH, deliveryAdd);
+			System.out.println("Payment mode selected: CASH. Please pay in cash at delivery at your door step.");
 		}
-		pay = new PaymentService();
-		pay.processPayment(order);
 
 		// print invoice
 		InvoicePrinter.printInvoice(order);
 
 		// assign delivery partner
+		DeliveryPartner partner = DeliveryService.assignPartner();
+		order.setDeliveryPartner(partner);
 
 		// Clear the cart after placing the order
 		cart.clear();

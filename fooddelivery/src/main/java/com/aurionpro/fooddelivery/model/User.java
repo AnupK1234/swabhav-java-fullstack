@@ -3,13 +3,13 @@ package com.aurionpro.fooddelivery.model;
 import com.aurionpro.fooddelivery.enums.UserType;
 
 public class User {
-	private int id;
+	private long id;
 	private String name;
 	private String email;
 	private long phone;
 	private UserType userType = UserType.CUSTOMER;
 
-	public User(int id, String name, String email, long phone, UserType userType) {
+	public User(long id, String name, String email, long phone, UserType userType) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -17,7 +17,7 @@ public class User {
 		this.userType = userType;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
