@@ -25,15 +25,14 @@ public class UserDAO {
 	}
 
 	public void addCustomer(User user) throws SQLException {
-		String sql = "INSERT INTO users(username,password,role,name,email,account_number,balance) VALUES(?,?,?,?,?,?,?)";
+
+		String sql = "INSERT INTO users(username,password,name,email) VALUES(?,?,?,?)";
+
 		try (Connection conn = DbUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setString(1, user.getUsername());
 			stmt.setString(2, user.getPassword());
-			stmt.setString(3, "CUSTOMER");
-			stmt.setString(4, user.getName());
-			stmt.setString(5, user.getEmail());
-			stmt.setLong(6, user.getAccountNumber());
-			stmt.setDouble(7, user.getBalance());
+			stmt.setString(3, user.getName());
+			stmt.setString(4, user.getEmail());
 			stmt.executeUpdate();
 		}
 	}
@@ -55,12 +54,13 @@ public class UserDAO {
 		User u = new User();
 		u.setId(rs.getInt("id"));
 		u.setUsername(rs.getString("username"));
-		u.setPassword(rs.getString("password"));
-		u.setRole(rs.getString("role"));
 		u.setName(rs.getString("name"));
 		u.setEmail(rs.getString("email"));
-		u.setAccountNumber(rs.getLong("account_number"));
+		// u.setAccountNumber(rs.getLong("account_number"));
+		u.setAccountNumber(1234567890);
+		u.setPassword(rs.getString("password"));
 		u.setBalance(rs.getDouble("balance"));
+		u.setRole(rs.getString("role"));
 		return u;
 	}
 }
