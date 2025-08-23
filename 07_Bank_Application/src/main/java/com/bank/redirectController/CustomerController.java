@@ -43,6 +43,7 @@ public class CustomerController extends HttpServlet {
 			}
 
 			session.setAttribute("userTransactions", userTransactions);
+
 			req.getRequestDispatcher("/views/customer/passbook.jsp").forward(req, resp);
 		} else if (path.equals("/newTransaction")) {
 			req.getRequestDispatcher("/views/customer/new-transaction.jsp").forward(req, resp);

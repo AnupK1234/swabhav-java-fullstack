@@ -20,6 +20,23 @@ public class Transaction {
 		this.date = date;
 	}
 
+	// for transfer
+	public Transaction(long from_account, long to_account, String type, double amount) {
+		super();
+		this.from_account = from_account;
+		this.type = type;
+		this.amount = amount;
+		this.to_account = to_account;
+	}
+
+	// for credit
+	public Transaction(long from_account, String type, double amount) {
+		super();
+		this.from_account = from_account;
+		this.type = type;
+		this.amount = amount;
+	}
+
 	public Transaction() {
 		super();
 	}

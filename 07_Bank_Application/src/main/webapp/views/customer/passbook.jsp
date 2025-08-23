@@ -34,7 +34,12 @@
 								<td>${txn.getId()}</td>
 								<td>${txn.getFrom_account()}</td>
 								<td>${txn.getTo_account()}</td>
-								<td>${txn.getType()}</td>
+								<td><c:if test="${txn.getType() == 'TRANSFER'}">
+										<span class="text-danger">${txn.getType()}</span>
+									</c:if> <c:if test="${txn.getType() == 'CREDIT'}">
+										<span class="text-success">${txn.getType()}</span>
+									</c:if></td>
+
 								<td>${txn.getAmount()}</td>
 								<td>${txn.getDate()}</td>
 							</tr>
