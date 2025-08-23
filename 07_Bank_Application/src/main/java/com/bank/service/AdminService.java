@@ -13,14 +13,17 @@ public class AdminService {
 	public void registerNewCustomer(User user) throws SQLException {
 		// Business logic goes here (e.g., validation, password hashing, etc.)
 		// user.setPassword(hash(user.getPassword()));
-
-		// Now, call the DAO to save the data
-		userDAO.addCustomer(user);
+		try {
+			// Now, call the DAO to save the data
+			userDAO.addCustomer(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public List<User> getAllCustomers() {
 		try {
-			List<User> customerList = userDAO.getAllCustomers();	
+			List<User> customerList = userDAO.getAllCustomers();
 			return customerList;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -4,19 +4,24 @@ import java.util.Date;
 
 public class Transaction {
 	private int id;
-	private int userId;
-	private int to_acc;
+	private long from_account;
+	private long to_account;
 	private String type;
 	private double amount;
 	private Date date;
 
-	public Transaction(int id, int userId, int to_acc, String type, double amount, Date date) {
+	public Transaction(int id, long from_account, long to_account, String type, double amount, Date date) {
+		super();
 		this.id = id;
-		this.userId = userId;
-		this.to_acc = to_acc;
+		this.from_account = from_account;
+		this.to_account = to_account;
 		this.type = type;
 		this.amount = amount;
 		this.date = date;
+	}
+
+	public Transaction() {
+		super();
 	}
 
 	public int getId() {
@@ -27,20 +32,20 @@ public class Transaction {
 		this.id = id;
 	}
 
-	public int getUserId() {
-		return userId;
+	public long getFrom_account() {
+		return from_account;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setFrom_account(long from_account) {
+		this.from_account = from_account;
 	}
 
-	public int getTo_acc() {
-		return to_acc;
+	public long getTo_account() {
+		return to_account;
 	}
 
-	public void setTo_acc(int to_acc) {
-		this.to_acc = to_acc;
+	public void setTo_account(long to_account) {
+		this.to_account = to_account;
 	}
 
 	public String getType() {
@@ -65,6 +70,12 @@ public class Transaction {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", from_account=" + from_account + ", to_account=" + to_account + ", type="
+				+ type + ", amount=" + amount + ", date=" + date + "]";
 	}
 
 }

@@ -32,7 +32,7 @@
 						<td>${customer.username}</td>
 						<td>${customer.name}</td>
 						<td>${customer.email}</td>
-		
+						<td>${customer.accountNumber}</td>		
 						<td>${customer.balance}</td>
 					</tr>
 				</c:forEach>
