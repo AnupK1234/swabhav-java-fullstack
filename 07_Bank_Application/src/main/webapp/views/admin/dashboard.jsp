@@ -54,7 +54,7 @@
 						<p class="card-text">Monitor all transactions happening in the
 							system.</p>
 						<a
-							href="${pageContext.request.contextPath}/admin?action=viewTransactions"
+							href="${pageContext.request.contextPath}/admin/viewTransactions"
 							class="btn btn-warning">View Transactions</a>
 					</div>
 				</div>

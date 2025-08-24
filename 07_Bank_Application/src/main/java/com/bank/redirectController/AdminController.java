@@ -1,10 +1,13 @@
 package com.bank.redirectController;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
+import com.bank.model.Transaction;
 import com.bank.model.User;
 import com.bank.service.AdminService;
+import com.bank.service.TransactionService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,9 +19,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AdminService adminService;
-	
+	private TransactionService transactionService;
+
 	public void init() {
 		adminService = new AdminService();
+		transactionService = new TransactionService();
 	}
 
 	@Override
@@ -37,7 +42,7 @@ public class AdminController extends HttpServlet {
 
 		else if (path.equals("/viewCustomers")) {
 			List<User> customers = adminService.getAllCustomers();
-			
+
 			// Set customers in request scope
 			req.setAttribute("customers", customers);
 
@@ -45,7 +50,16 @@ public class AdminController extends HttpServlet {
 			req.getRequestDispatcher("/views/admin/view-customers.jsp").forward(req, resp);
 
 		} else if (path.equals("/viewTransactions")) {
-			req.getRequestDispatcher("/views/admin/view-transactions.jsp").forward(req, resp);
+			try {
+				List<Transaction> allTransactions = transactionService.getAllTransactions();
+
+				req.setAttribute("allTransaction", allTransactions);
+				req.getRequestDispatcher("/views/admin/view-transactions.jsp").forward(req, resp);
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		} else if (path.equals("/dashboard")) {
 			req.getRequestDispatcher("/views/admin/dashboard.jsp").forward(req, resp);
 		} else {

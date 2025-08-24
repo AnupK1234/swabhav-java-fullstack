@@ -1,10 +1,7 @@
 package com.bank.controller;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.bank.model.Transaction;
-import com.bank.model.User;
 import com.bank.service.TransactionService;
 
 import jakarta.servlet.ServletException;

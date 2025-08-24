@@ -17,6 +17,12 @@ public class TransactionService {
 	public List<Transaction> getUserTransactions(long userAccNum) throws SQLException {
 		return transactionDAO.getTransactionsByUserId(userAccNum);
 	}
+	
+	public List<Transaction> getAllTransactions() throws SQLException {
+		return transactionDAO.getAllTransactions();
+	}
+	
+	
 
 	public void createTransaction(HttpServletRequest req, HttpServletResponse res) {
 		HttpSession session = req.getSession();

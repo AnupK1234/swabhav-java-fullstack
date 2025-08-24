@@ -7,10 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import struqt.util.UniqueIdGenerator;
 
 import com.bank.misc.PasswordHasher;
 import com.bank.model.User;
+
+import struqt.util.UniqueIdGenerator;
 
 public class UserDAO {
 	UniqueIdGenerator generator = new UniqueIdGenerator(1L);
@@ -53,6 +54,46 @@ public class UserDAO {
 			}
 		}
 		return customers;
+	}
+
+	public boolean updateUser(User user) {
+		String sql = "UPDATE users SET name=?, email=?, password=? WHERE id=?";
+		try (Connection conn = DbUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setString(1, user.getName());
+			ps.setString(2, user.getEmail());
+			ps.setString(3, user.getPassword());
+			ps.setInt(4, user.getId());
+
+			return ps.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public User getUserById(int id) {
+		User user = null;
+		String sql = "SELECT * FROM users WHERE id = ?";
+		try (Connection conn = DbUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				user = new User();
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+				user.setEmail(rs.getString("email"));
+				user.setUsername(rs.getString("username"));
+				user.setAccountNumber(rs.getLong("account_number"));
+				user.setBalance(rs.getDouble("balance"));
+				user.setRole(rs.getString("role"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 	private User mapUser(ResultSet rs) throws SQLException {

@@ -32,6 +32,27 @@ public class TransactionDAO {
 		return list;
 	}
 
+	public List<Transaction> getAllTransactions() throws SQLException {
+		List<Transaction> list = new ArrayList<>();
+		String sql = "SELECT * FROM transactions ORDER BY date DESC";
+
+		try (Connection conn = DbUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Transaction txn = new Transaction();
+				txn.setId(rs.getInt("id"));
+				txn.setTo_account(rs.getLong("to_account"));
+				txn.setFrom_account(rs.getLong("from_account"));
+				txn.setType(rs.getString("type"));
+				txn.setAmount(rs.getDouble("amount"));
+				txn.setDate(rs.getTimestamp("date"));
+				list.add(txn);
+			}
+		}
+		return list;
+	}
+
 	public void saveTransaction(Transaction txn) {
 		String txnSql;
 		String creditSql = "UPDATE users SET balance = balance + ? WHERE account_number = ?";
